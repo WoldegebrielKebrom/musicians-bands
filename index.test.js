@@ -1,5 +1,5 @@
 const {sequelize} = require('./db');
-const {Band, Musician} = require('./index')
+const {Band, Musician,Song} = require('./index')
 
 describe('Band and Musician Models', () => {
     /**
@@ -51,6 +51,49 @@ describe('Band and Musician Models', () => {
          expect(musican[1].dataValues.bandId).toBe(1);
     })
 
+
+    test('can create a Song', async () => {
+        // TODO - test creating a song
+        const newSong = await Song.create({
+            title  : 'F THE POLICE',
+            year :  1988
+
+    });
+        expect(newSong.title).toBe('F THE POLICE');
+    })
+
+
+    test('test man-many association', async () => {
+        // TODO - test creating a song
+        const newSong = await Song.create({
+            title  : 'HATE IT OR LOVE IT',
+            year :  2005
+
+        });
+
+        const newBand = await Band.create({
+            name  : 'G-UNIT',
+            genre :  'rap'
+
+    })
+
+        const nwa = await Band.findByPk(1);
+        await nwa.addSong(1);
+        await nwa.addSong(2)
+
+        const fThePollice = await Song.findByPk(1);
+        await fThePollice.addBand(1);
+        await fThePollice.addBand(2);
+
+        
+        const songs = await Song.findAll({
+            include : [Band]
+        })
+
+        //console.log('something',songs[0].dataValues.bands[0].dataValues.name);
+
+        expect(songs[0].dataValues.bands[0].dataValues.name).toBe('NWA');
+    })
 
 
 
