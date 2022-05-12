@@ -29,7 +29,29 @@ describe('Band and Musician Models', () => {
             name  : 'ICE CUBE',
             genre :  'NONE'
 
-    })
+    });
         expect(newMusician.name).toBe('ICE CUBE');
     })
+
+
+    test('test association', async () => {
+        const newMusician = await Musician.create({
+            name  : 'EAZY E',
+            genre :  'NONE'
+
+    });
+        const nwa = await Band.findByPk(1);
+        await nwa.addMusician(1);
+        await nwa.addMusician(2)
+
+        const  musican = await Musician.findAll();
+        console.log("All musicans:", musican[1]);
+        
+         expect(musican[0].dataValues.bandId).toBe(1);
+         expect(musican[1].dataValues.bandId).toBe(1);
+    })
+
+
+
+
 })
