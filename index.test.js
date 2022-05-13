@@ -96,5 +96,32 @@ describe('Band and Musician Models', () => {
     })
 
 
+    test('test eager load', async () => {
+        // TODO - test creating a musician
+        const musicans = await Band.findAll({
+            include : [{
+                model:Musician, as: 'musicians'
+            }]
+        });
+
+        const songs = await Band.findAll({
+            include : [{
+                model:Song, as: 'songs'
+            }]
+        })
+
+        //console.log("edger loading", musicans[0].dataValues.musicians[0].dataValues.name);
+        //console.log("edger loading", songs[0].dataValues.songs[0].dataValues.title);
+
+
+
+        
+        expect(musicans[0].dataValues.musicians[0].dataValues.name).toBe('EAZY E');
+        expect(songs[0].dataValues.songs[0].dataValues.title).toBe('F THE POLICE');
+
+    })
+
+
+
 
 })
